@@ -6,6 +6,7 @@ var raml2obj = require('raml2obj');
 var pjson = require('./package.json');
 var nunjucks = require('nunjucks');
 var Q = require('q');
+var path = require('path');
 
 /*
  The config object can contain the following keys and values:
@@ -40,6 +41,10 @@ function getDefaultConfig(mainTemplate, templatesPath) {
     // When using the default template, make sure that Nunjucks isn't
     // using the working directory since that might be anything
     templatesPath = __dirname;
+  } else if (!templatesPath) {
+    // Otherwise, if not specified, make the template path relative to
+    // the specified main template to allow includes
+    templatesPath = path.dirname(mainTemplate);
   }
 
   return {
